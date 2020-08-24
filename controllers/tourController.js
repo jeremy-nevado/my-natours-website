@@ -35,29 +35,6 @@ exports.aliasTopTours = async (req, res, next) => {
 // };
 
 exports.getAllTours = catchAsync(async (req, res, next) => {
-  // BUILD THE QUERY
-  // In APIFeatures class
-
-  // // 2)Advanced Filtering
-  // In APIFeatures class
-
-  // 3) Sorting
-  // In APIFeatures class
-
-  // 4) Field limiting
-  // In APIFeatures class
-
-  // 5) Pagination
-  // In APIFeatures class
-
-  // const query = await Tour.find()
-  //   .where('duration')
-  //   .equals(5)
-  //   .where('difficulty')
-  //   .equals('easy');
-
-  // EXECUTE THE QUERY
-
   const features = new APIFeatures(Tour.find(), req.query)
     .filter()
     .sort()
