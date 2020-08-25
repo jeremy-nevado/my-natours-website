@@ -69,7 +69,7 @@ exports.createTour = catchAsync(async (req, res, next) => {
   const newTour = await Tour.create(req.body);
 
   if (!newTour) {
-    return next(new AppError('No tour found with that ID', 404));
+    return next(new AppError('Tour could not be created.', 400));
   }
 
   res.status(201).json({

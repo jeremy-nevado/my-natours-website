@@ -14,7 +14,7 @@ const app = express();
 // 1) MIDDLEWARES
 // console.log(process.env.NODE_ENV);
 if (process.env.NODE_ENV === 'development') {
-  app.use(morgan('dev'));
+    app.use(morgan('dev'));
 }
 app.use(express.json());
 app.use(express.static(`${__dirname}/public`));
@@ -23,18 +23,18 @@ app.use((req, res, next) => {
     req.requestTime = new Date().toISOString();
 
     next();
-})
+});
 
 // 2) ROUTES
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/tours', tourRouter);
 
 app.all('*', (req, res, next) => {
-  // const err = new Error(`Can't find ${req.originalUrl} on this server!`)
-  // err.status = 'fail';
-  // err.statusCode = 404;
+    // const err = new Error(`Can't find ${req.originalUrl} on this server!`)
+    // err.status = 'fail';
+    // err.statusCode = 404;
 
-  next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
+    next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
 });
 
 app.use(globalErrorHandler);
@@ -54,8 +54,8 @@ module.exports = app;
 // });
 
 // app.use((req, res, next) => {
-    // req.requestTime = new Date().toISOString();
-    // next();
+// req.requestTime = new Date().toISOString();
+// next();
 // });
 
 // app.get('/api/v1/tours', getAllTours);
