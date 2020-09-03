@@ -1,5 +1,6 @@
 // Core Node.js Packages
 // External Packages
+const path = require('path');
 const express = require('express');
 const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
@@ -14,11 +15,18 @@ const AppError = require('./utils/appError');
 const tourRouter = require('./routes/tourRoutes');
 const userRouter = require('./routes/userRoutes');
 const reviewRouter = require('./routes/reviewRoutes');
+const viewRouter = require('./routes/viewRoutes');
 
 // Creating the express app
 const app = express();
 
+app.set('view engine', 'pug');
+app.set('views', path.join(__dirname, 'views'));
+
 // 1) GLOBAL MIDDLEWARES
+// Serving static files
+app.use(express.static(path.join(__dirname, 'public')));
+
 // console.log(process.env.NODE_ENV);
 // Set security HTTP headers
 app.use(helmet());
@@ -46,19 +54,18 @@ app.use(mongoSanitize());
 app.use(xss());
 
 // Prevent parameter pollution
-app.use(hpp({
-    whitelist: [
-        'duration',
-        'ratingsQuantity',
-        'maxGroupSize',
-        'difficulty',
-        'price',
-        'ratingsAverage'
-    ]
-}));
-
-// Serving static files
-app.use(express.static(`${__dirname}/public`));
+app.use(
+    hpp({
+        whitelist: [
+            'duration',
+            'ratingsQuantity',
+            'maxGroupSize',
+            'difficulty',
+            'price',
+            'ratingsAverage'
+        ]
+    })
+);
 
 // Test middleware
 app.use((req, res, next) => {
@@ -68,6 +75,7 @@ app.use((req, res, next) => {
 });
 
 // 2) ROUTES
+app.use('/', viewRouter);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/reviews', reviewRouter);
