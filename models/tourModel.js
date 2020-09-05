@@ -13,45 +13,45 @@ const tourSchema = new mongoose.Schema(
             trim: true,
             maxlength: [
                 40,
-                'A tour name must be shorter than, or equal to, 40 characters'
+                'A tour name must be shorter than, or equal to, 40 characters',
             ],
             minlength: [
                 10,
-                'A tour must have a name larger than, or equal to, 10 characters'
-            ]
+                'A tour must have a name larger than, or equal to, 10 characters',
+            ],
             // validate: [validator.isAlpha, 'Tour name must only contain characters'],
         },
         slug: String,
         duration: {
             type: Number,
-            required: [true, 'A tour must have a duration']
+            required: [true, 'A tour must have a duration'],
         },
         maxGroupSize: {
             type: Number,
-            required: [true, 'A tour must have a group size']
+            required: [true, 'A tour must have a group size'],
         },
         difficulty: {
             type: String,
             required: [true, 'A tour should have a difficulty'],
             enum: {
                 values: ['easy', 'medium', 'difficult'],
-                message: 'Difficulty is either: easy, medium or difficult'
-            }
+                message: 'Difficulty is either: easy, medium or difficult',
+            },
         },
         ratingsAverage: {
             type: Number,
             default: 4.5,
             min: [1, 'Rating must be above 1.0'],
             max: [5, 'Rating must be below 5.0'],
-            set: val => Math.round(val * 10) / 10
+            set: (val) => Math.round(val * 10) / 10,
         },
         ratingsQuantity: {
             type: Number,
-            default: 0
+            default: 0,
         },
         price: {
             type: Number,
-            required: [true, 'A tour must have a price']
+            required: [true, 'A tour must have a price'],
         },
         priceDiscout: {
             type: Number,
@@ -61,68 +61,68 @@ const tourSchema = new mongoose.Schema(
                     return val < this.price;
                 },
                 message:
-                    'Discout price ({VALUE}) should be less than the regular price'
-            }
+                    'Discout price ({VALUE}) should be less than the regular price',
+            },
         },
         summary: {
             type: String,
             trim: true,
-            required: [true, 'A tour must have a summary']
+            required: [true, 'A tour must have a summary'],
         },
         description: {
             type: String,
-            trim: true
+            trim: true,
         },
         imageCover: {
             type: String,
-            required: true
+            required: true,
         },
         images: [String],
         createdAt: {
             type: Date,
             default: Date.now(),
-            select: false
+            select: false,
         },
         startDates: [Date],
         secretTour: {
             type: Boolean,
-            default: false
+            default: false,
         },
         startLocation: {
             // GeoJSON used by mongoose
             type: {
                 type: String,
                 default: 'Point',
-                enum: ['Point']
+                enum: ['Point'],
             },
             coordinates: [Number],
             address: String,
-            description: String
+            description: String,
         },
         locations: [
             {
                 type: {
                     type: String,
                     default: 'Point',
-                    enum: ['Point']
+                    enum: ['Point'],
                 },
                 coordinates: [Number],
                 address: String,
                 description: String,
-                day: Number
-            }
+                day: Number,
+            },
         ],
         guides: [
             {
                 type: mongoose.Schema.ObjectId,
-                ref: 'User'
-            }
-        ]
+                ref: 'User',
+            },
+        ],
     },
     {
         toJSON: { virtuals: true },
-        toObject: { virtuals: true }
-    }
+        toObject: { virtuals: true },
+    },
 );
 
 // tourSchema.index({ price: 1 });
@@ -138,7 +138,7 @@ tourSchema.virtual('durationWeeks').get(function () {
 tourSchema.virtual('reviews', {
     ref: 'Review',
     foreignField: 'tour',
-    localField: '_id'
+    localField: '_id',
 });
 
 // Document Middleware: runs before .save() and .create()
@@ -180,15 +180,15 @@ tourSchema.pre(/^find/, function (next) {
 tourSchema.pre(/^find/, function (next) {
     this.populate({
         path: 'guides',
-        select: '-__v -passwordChangedAt'
+        select: '-__v -passwordChangedAt',
     });
     next();
 });
 
 // Aggregation Middelware
 // tourSchema.pre('aggregate', function (next) {
-    // this.pipeline().unshift({ $match: { secretTour: { $ne: true } } });
-    // next();
+// this.pipeline().unshift({ $match: { secretTour: { $ne: true } } });
+// next();
 // });
 
 const Tour = mongoose.model('Tour', tourSchema);
