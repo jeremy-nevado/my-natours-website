@@ -6,26 +6,29 @@ const crypto = require('crypto');
 const userSchema = new mongoose.Schema({
     name: {
         type: String,
-        require: [true, 'Please tell us your name!']
+        require: [true, 'Please tell us your name!'],
     },
     email: {
         type: String,
         require: [true, 'Please provide your email'],
         unique: true,
         lowercase: true,
-        validate: [validator.isEmail, 'Please provide a valid email']
+        validate: [validator.isEmail, 'Please provide a valid email'],
     },
-    photo: String,
+    photo: {
+        type: String,
+        default: 'default.jpg',
+    },
     role: {
         type: String,
         enum: ['user', 'guide', 'lead-guide', 'admin'],
-        default: 'user'
+        default: 'user',
     },
     password: {
         type: String,
         required: [true, 'A user must have a password.'],
         minlength: 8,
-        select: false
+        select: false,
     },
     passwordConfirm: {
         type: String,
@@ -35,8 +38,8 @@ const userSchema = new mongoose.Schema({
             validator: function (el) {
                 return el === this.password;
             },
-            message: 'Passwords are not the same'
-        }
+            message: 'Passwords are not the same',
+        },
     },
     passwordChangedAt: Date,
     passwordResetToken: String,
@@ -44,8 +47,8 @@ const userSchema = new mongoose.Schema({
     active: {
         type: Boolean,
         default: true,
-        select: false
-    }
+        select: false,
+    },
 });
 
 userSchema.pre('save', async function (next) {
@@ -75,7 +78,7 @@ userSchema.pre(/^find/, async function (next) {
 
 userSchema.methods.correctPassword = async function (
     candidatePassword,
-    userPassword
+    userPassword,
 ) {
     return await bcrypt.compare(candidatePassword, userPassword);
 };

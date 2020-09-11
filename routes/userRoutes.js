@@ -19,7 +19,12 @@ router.patch('/updateMyPassword', authController.updatePassword);
 
 router.delete('/deleteMe', userController.deleteMe);
 
-router.patch('/updateMe', userController.updateMe);
+router.patch(
+    '/updateMe',
+    userController.uploadUserPhoto,
+    userController.resizeUserPhoto,
+    userController.updateMe,
+);
 
 // Restrict all routes to administrator
 router.use(authController.restrictTo('admin'));
