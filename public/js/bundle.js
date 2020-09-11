@@ -8904,7 +8904,6 @@ if (userDataForm) userDataForm.addEventListener('submit', function (e) {
   form.append('name', document.getElementById('name').value);
   form.append('email', document.getElementById('email').value);
   form.append('photo', document.getElementById('photo').files[0]);
-  console.log(form);
   (0, _updateSettings.updateSettings)(form, 'data');
 });
 if (userPasswordForm) userPasswordForm.addEventListener('submit',
@@ -8976,7 +8975,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "38613" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56934" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
