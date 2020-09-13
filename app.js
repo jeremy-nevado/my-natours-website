@@ -16,6 +16,7 @@ const AppError = require('./utils/appError');
 const tourRouter = require('./routes/tourRoutes');
 const userRouter = require('./routes/userRoutes');
 const reviewRouter = require('./routes/reviewRoutes');
+const bookingRouter = require('./routes/bookingRoutes');
 const viewRouter = require('./routes/viewRoutes');
 
 // Creating the express app
@@ -29,8 +30,8 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // console.log(process.env.NODE_ENV);
+app.use(helmet());
 // Set security HTTP headers
-
 // Development logging
 if (process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'));
@@ -80,6 +81,7 @@ app.use('/', viewRouter);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/reviews', reviewRouter);
+app.use('/api/v1/bookings', bookingRouter);
 
 app.all('*', (req, res, next) => {
     // const err = new Error(`Can't find ${req.originalUrl} on this server!`)
