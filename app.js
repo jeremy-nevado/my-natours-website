@@ -30,7 +30,11 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // console.log(process.env.NODE_ENV);
-app.use(helmet());
+app.use(
+    helmet({
+        contentSecurityPolicy: false,
+    }),
+);
 // Set security HTTP headers
 // Development logging
 if (process.env.NODE_ENV === 'development') {
