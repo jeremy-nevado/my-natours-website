@@ -78,7 +78,8 @@ app.use(
     }),
 );
 
-app.use(compression);
+// Compress files
+app.use(compression());
 
 // Test middleware
 app.use((req, res, next) => {
