@@ -10,7 +10,7 @@ router.get('/my-tours', authController.protect, viewsController.getMyTours);
 
 router.get(
     '/',
-    bookingController.createBookingCheckout,
+    // bookingController.createBookingCheckout,
     authController.isLoggedIn,
     viewsController.getOverview,
 );
